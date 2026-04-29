@@ -1,72 +1,67 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged
-} from 'firebase/auth'
-import { doc, setDoc, getDoc } from 'firebase/firestore'
-import { auth, db } from '../firebase.js'
+import React, { createContext, useContext, useState } from 'react'
 
 const AuthContext = createContext(null)
+
+// Dummy test accounts — backend team will replace with real API calls
+const DUMMY_USERS = [
+  {
+    uid: '1',
+    email: 'customer@test.com',
+    password: 'password123',
+    fullName: 'Jane Doe',
+    accountNumber: '4001-00123456',
+    idNumber: '0001010000000',
+    role: 'customer'
+  },
+  {
+    uid: '2',
+    email: 'employee@test.com',
+    password: 'password123',
+    fullName: 'John Smith',
+    accountNumber: '4001-00654321',
+    idNumber: '0001010000001',
+    role: 'employee'
+  }
+]
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [userData, setUserData] = useState(null)
-  const [loading, setLoading] = useState(true)
 
-  // Listen to Firebase auth state changes
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        setUser(firebaseUser)
-        // Fetch extra user data from Firestore
-        const docRef = doc(db, 'users', firebaseUser.uid)
-        const docSnap = await getDoc(docRef)
-        if (docSnap.exists()) setUserData(docSnap.data())
-      } else {
-        setUser(null)
-        setUserData(null)
-      }
-      setLoading(false)
-    })
-    return unsubscribe
-  }, [])
-
-  // Register: creates Firebase Auth user + saves profile to Firestore
   async function register({ fullName, idNumber, accountNumber, email, password }) {
-    const cred = await createUserWithEmailAndPassword(auth, email, password)
-    // Save extra profile data to Firestore (password is NEVER stored here)
-    await setDoc(doc(db, 'users', cred.user.uid), {
-      fullName,
-      idNumber,      // In production: encrypt this before storing
-      accountNumber, // In production: encrypt this before storing
+    // Simulate registration — backend team will replace with real API
+    const newUser = {
+      uid: Date.now().toString(),
       email,
-      createdAt: new Date().toISOString(),
-    })
-    const docSnap = await getDoc(doc(db, 'users', cred.user.uid))
-    setUserData(docSnap.data())
-    return cred.user
+      fullName,
+      idNumber,
+      accountNumber,
+      role: 'customer'
+    }
+    setUser(newUser)
+    setUserData(newUser)
+    return newUser
   }
 
-  // Login: Firebase Auth handles bcrypt comparison internally
   async function login({ email, password }) {
-    const cred = await signInWithEmailAndPassword(auth, email, password)
-    const docSnap = await getDoc(doc(db, 'users', cred.user.uid))
-    if (docSnap.exists()) setUserData(docSnap.data())
-    return cred.user
+    // Check against dummy users
+    const found = DUMMY_USERS.find(
+      u => u.email === email && u.password === password
+    )
+    if (!found) throw new Error('Invalid email or password')
+    setUser(found)
+    setUserData(found)
+    return found
   }
 
-  // Logout
   async function logout() {
-    await signOut(auth)
     setUser(null)
     setUserData(null)
   }
 
   return (
-    <AuthContext.Provider value={{ user, userData, loading, register, login, logout }}>
-      {!loading && children}
+    <AuthContext.Provider value={{ user, userData, loading: false, register, login, logout }}>
+      {children}
     </AuthContext.Provider>
   )
 }
