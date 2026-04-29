@@ -1,0 +1,61 @@
+.page { min-height: 100vh; background: #070d1a; display: flex; font-family: 'DM Sans', sans-serif; color: #e2e8f0; }
+.bgGrid { position: fixed; inset: 0; background-image: linear-gradient(rgba(56,189,248,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(56,189,248,0.025) 1px, transparent 1px); background-size: 44px 44px; pointer-events: none; }
+
+.main { flex: 1; padding: 40px 48px; overflow-y: auto; position: relative; z-index: 10; }
+.pageTitle { font-family: 'Playfair Display', serif; font-size: 26px; color: #f1f5f9; font-weight: 700; margin-bottom: 6px; }
+.pageSub { font-size: 13px; color: #475569; margin-bottom: 28px; line-height: 1.6; max-width: 640px; }
+
+.catTitle { font-size: 11px; color: #475569; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px; font-weight: 500; }
+
+.formCard { background: rgba(10,18,38,0.85); border: 1px solid rgba(148,163,184,0.07); border-radius: 14px; padding: 26px; max-width: 760px; }
+
+/* Form fields */
+.fieldGroup { margin-bottom: 18px; }
+.label { display: block; font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 7px; font-weight: 500; }
+.input { width: 100%; background: rgba(15,25,50,0.9); border: 1px solid rgba(148,163,184,0.1); border-radius: 8px; padding: 11px 14px; color: #e2e8f0; font-size: 14px; outline: none; font-family: 'DM Sans', sans-serif; transition: border-color 0.2s; }
+.input:focus { border-color: rgba(56,189,248,0.35); }
+.input::placeholder { color: rgba(100,116,139,0.55); }
+.inputErr { border-color: rgba(239,68,68,0.35) !important; }
+.select { background: rgba(15,25,50,0.9); border: 1px solid rgba(148,163,184,0.1); border-radius: 8px; padding: 11px 12px; color: #e2e8f0; font-size: 14px; outline: none; font-family: 'DM Sans', sans-serif; }
+.err { font-size: 11px; color: #f87171; margin-top: 4px; }
+.twoCol { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.secNote { background: rgba(14,165,233,0.05); border: 1px solid rgba(14,165,233,0.12); border-radius: 6px; padding: 10px 14px; font-size: 12px; color: #7dd3fc; margin: 16px 0; line-height: 1.6; }
+.auditNote { margin-top: 16px; font-size: 12px; color: #334155; max-width: 760px; line-height: 1.6; }
+
+.btnPrimary { width: 100%; background: linear-gradient(135deg, #0ea5e9, #1d4ed8); border: none; border-radius: 8px; padding: 13px; color: #fff; font-size: 14px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: opacity 0.2s, transform 0.15s; }
+.btnPrimary:hover { opacity: 0.88; transform: translateY(-1px); }
+.btnPrimary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.successBanner { background: rgba(34,197,94,0.07); border: 1px solid rgba(34,197,94,0.18); border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #86efac; margin-bottom: 20px; max-width: 760px; }
+.errorBanner { background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.18); border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #f87171; margin-bottom: 20px; max-width: 760px; }
+
+/* Transactions table */
+.emptyMsg { font-size: 13px; color: #475569; padding: 20px; }
+.txList { display: flex; flex-direction: column; }
+.txHeader { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; padding: 10px 20px; border-bottom: 1px solid rgba(148,163,184,0.08); font-size: 10px; color: #475569; text-transform: uppercase; letter-spacing: 1px; }
+.txRow { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; padding: 16px 20px; border-bottom: 1px solid rgba(148,163,184,0.05); align-items: center; transition: background 0.15s; }
+.txRow:last-child { border-bottom: none; }
+.txRow:hover { background: rgba(56,189,248,0.02); }
+.txName { font-size: 13px; color: #cbd5e1; margin-bottom: 2px; }
+.txMeta { font-size: 11px; color: #475569; }
+.txSwift { font-size: 13px; color: #64748b; }
+.txAmount { font-size: 14px; color: #e2e8f0; font-weight: 500; }
+.txStatus { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 500; }
+
+/* Security controls */
+.secRow { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 16px 20px; }
+.secLabel { font-size: 13px; color: #94a3b8; margin-bottom: 3px; font-weight: 500; }
+.secDetail { font-size: 12px; color: #475569; line-height: 1.6; max-width: 520px; }
+.secBadge { padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.8px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+
+/* Employee portal */
+.employeeBadge { background: rgba(56,189,248,0.06); border: 1px solid rgba(56,189,248,0.14); border-radius: 8px; padding: 10px 16px; font-size: 12px; color: #7dd3fc; margin-bottom: 20px; max-width: 760px; }
+.empHeader { display: grid; grid-template-columns: 2fr 2fr 1fr 1fr 1.5fr; padding: 10px 20px; border-bottom: 1px solid rgba(148,163,184,0.08); font-size: 10px; color: #475569; text-transform: uppercase; letter-spacing: 1px; }
+.empRow { display: grid; grid-template-columns: 2fr 2fr 1fr 1fr 1.5fr; padding: 16px 20px; border-bottom: 1px solid rgba(148,163,184,0.05); align-items: center; }
+.empRow:last-child { border-bottom: none; }
+.actionBtns { display: flex; gap: 8px; }
+.btnApprove { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.22); border-radius: 6px; color: #86efac; padding: 6px 14px; font-size: 12px; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background 0.2s; }
+.btnApprove:hover { background: rgba(34,197,94,0.18); }
+.btnReject { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 6px; color: #f87171; padding: 6px 14px; font-size: 12px; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background 0.2s; }
+.btnReject:hover { background: rgba(239,68,68,0.16); }

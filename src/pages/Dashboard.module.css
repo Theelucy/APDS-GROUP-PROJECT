@@ -1,0 +1,32 @@
+.page { min-height: 100vh; background: #070d1a; display: flex; font-family: 'DM Sans', sans-serif; color: #e2e8f0; }
+.bgGrid { position: fixed; inset: 0; background-image: linear-gradient(rgba(56,189,248,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(56,189,248,0.025) 1px, transparent 1px); background-size: 44px 44px; pointer-events: none; }
+
+.main { flex: 1; padding: 40px 48px; overflow-y: auto; position: relative; z-index: 10; }
+
+.topBar { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 32px; }
+.greeting { font-size: 13px; color: #475569; margin-bottom: 2px; }
+.name { font-family: 'Playfair Display', serif; font-size: 26px; color: #f1f5f9; font-weight: 700; }
+
+.statusPill { display: flex; align-items: center; gap: 7px; background: rgba(34,197,94,0.07); border: 1px solid rgba(34,197,94,0.18); border-radius: 20px; padding: 6px 14px; font-size: 12px; color: #86efac; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; flex-shrink: 0; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+.accountCard { background: linear-gradient(135deg, #0c1a3a 0%, #0f2354 60%, #0c1a3a 100%); border: 1px solid rgba(56,189,248,0.14); border-radius: 16px; padding: 28px; margin-bottom: 22px; position: relative; overflow: hidden; }
+.cardShine { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 50%); border-radius: 16px; pointer-events: none; }
+.cardLabel { font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
+.cardNumber { font-size: 22px; color: #e2e8f0; letter-spacing: 3px; font-weight: 500; margin-bottom: 24px; }
+.cardRow { display: flex; justify-content: space-between; }
+.cardSubLabel { font-size: 10px; color: #475569; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
+.cardSubValue { font-size: 14px; color: #94a3b8; font-weight: 500; }
+
+.statsGrid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 32px; }
+.statCard { background: rgba(10,18,38,0.8); border: 1px solid rgba(148,163,184,0.07); border-radius: 12px; padding: 18px; }
+.statLabel { font-size: 10px; color: #475569; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.statValue { font-size: 15px; color: #38bdf8; font-weight: 500; }
+
+.sectionTitle { font-size: 11px; color: #475569; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 14px; font-weight: 500; }
+.actionGrid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+.actionCard { background: rgba(10,18,38,0.8); border: 1px solid rgba(148,163,184,0.07); border-radius: 12px; padding: 22px 16px; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: border-color 0.2s, transform 0.15s; font-family: 'DM Sans', sans-serif; }
+.actionCard:hover { border-color: rgba(56,189,248,0.22); transform: translateY(-2px); }
+.actionLabel { font-size: 13px; color: #94a3b8; }
+.actionSub { font-size: 11px; color: #334155; }

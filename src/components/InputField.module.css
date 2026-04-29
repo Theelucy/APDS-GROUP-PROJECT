@@ -1,0 +1,45 @@
+.group { margin-bottom: 14px; }
+
+.label {
+  display: block;
+  font-size: 10px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.wrap { position: relative; }
+
+.icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  background: rgba(15, 25, 50, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  border-radius: 8px;
+  padding: 11px 14px 11px 40px;
+  color: #e2e8f0;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.input:focus {
+  border-color: rgba(56, 189, 248, 0.4);
+  background: rgba(15, 25, 50, 1);
+}
+
+.input::placeholder { color: rgba(100, 116, 139, 0.6); }
+.inputError { border-color: rgba(239, 68, 68, 0.4) !important; }
+.error { margin-top: 4px; font-size: 11px; color: #f87171; }

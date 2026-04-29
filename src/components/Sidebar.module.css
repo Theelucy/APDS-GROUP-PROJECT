@@ -1,0 +1,54 @@
+.sidebar {
+  width: 230px;
+  flex-shrink: 0;
+  background: rgba(8, 15, 32, 0.97);
+  border-right: 1px solid rgba(148, 163, 184, 0.07);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 28px 14px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 20;
+}
+
+.top { display: flex; flex-direction: column; gap: 36px; }
+
+.brand { display: flex; align-items: center; gap: 10px; padding: 0 6px; }
+.brandMark {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, #0ea5e9, #1d4ed8);
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+}
+.brandName { font-family: 'Playfair Display', serif; font-size: 17px; color: #f8fafc; }
+.brandName span { color: #38bdf8; }
+
+.nav { display: flex; flex-direction: column; gap: 2px; }
+.navItem {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 8px;
+  font-size: 13px; color: #64748b;
+  background: none; border: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  width: 100%; text-align: left;
+  transition: color 0.2s, background 0.2s;
+}
+.navItem:hover { color: #94a3b8; background: rgba(148, 163, 184, 0.05); }
+.navItem.active { color: #38bdf8; background: rgba(56, 189, 248, 0.08); }
+
+.bottom { display: flex; flex-direction: column; gap: 10px; }
+.userInfo { padding: 10px 12px; border-radius: 8px; background: rgba(148,163,184,0.04); border: 1px solid rgba(148,163,184,0.06); }
+.userName { font-size: 13px; color: #94a3b8; font-weight: 500; }
+.userRole { font-size: 11px; color: #475569; text-transform: capitalize; }
+
+.logoutBtn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 12px; border-radius: 8px;
+  font-size: 13px; color: #475569;
+  background: none; border: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; width: 100%;
+  transition: color 0.2s;
+}
+.logoutBtn:hover { color: #f87171; }
