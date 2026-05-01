@@ -3,6 +3,7 @@ import LoginForm from '../components/LoginForm.jsx'
 import RegisterForm from '../components/RegisterForm.jsx'
 import styles from './AuthPage.module.css'
 
+
 export default function AuthPage() {
   const [showRegister, setShowRegister] = useState(false)
 
@@ -11,17 +12,29 @@ export default function AuthPage() {
       <div className={styles.bgGrid} />
       <div className={`${styles.orb} ${styles.orb1}`} />
       <div className={`${styles.orb} ${styles.orb2}`} />
-      <div className={`${styles.orb} ${styles.orb3}`}
-        style={{ left: showRegister ? '58%' : '26%', top: showRegister ? '16%' : '44%' }} />
+      <div
+        className={`${styles.orb} ${styles.orb3}`}
+        style={{ left: showRegister ? '58%' : '26%', top: showRegister ? '16%' : '44%' }}
+      />
 
       <div className={styles.scene}>
         <div className={`${styles.card} ${showRegister ? styles.flipped : ''}`}>
+
+          {/* ── Login face ── */}
           <div className={`${styles.face} ${styles.front}`}>
             <div className={styles.shine} />
+            <div className={styles.logoWrap}>
+              <img src="/project_logo.jpeg" alt="SecurSwift" className={styles.logo} />
+            </div>
             <LoginForm onSwitchToRegister={() => setShowRegister(true)} />
           </div>
+
+          {/* ── Register face ── */}
           <div className={`${styles.face} ${styles.back}`}>
             <div className={styles.shine} />
+            <div className={styles.logoWrap}>
+              <img src="/project_logo.jpeg" alt="SecurSwift" className={styles.logo} />
+            </div>
             <RegisterForm onSwitchToLogin={() => setShowRegister(false)} />
           </div>
         </div>
