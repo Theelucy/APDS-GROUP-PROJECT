@@ -52,7 +52,14 @@ const IdIcon = () => (
 export default function RegisterForm({ onSwitchToLogin }) {
   const navigate = useNavigate()
   const { register } = useAuth()
-  const [form, setForm] = useState({ fullName: '', idNumber: '', accountNumber: '', email: '', password: '', confirmPassword: '' })
+  const [form, setForm] = useState({
+    fullName: '',
+    idNumber: '',
+    accountNumber: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  })
   const [errors, setErrors] = useState({})
   const [apiError, setApiError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -66,16 +73,51 @@ export default function RegisterForm({ onSwitchToLogin }) {
 
   function validate() {
     const errs = {}
-    if (!form.fullName.trim()) errs.fullName = 'Full name is required'
-    if (!form.idNumber.trim()) errs.idNumber = 'ID number is required'
-    else if (!/^\d{13}$/.test(form.idNumber)) errs.idNumber = 'Must be 13 digits'
-    if (!form.accountNumber.trim()) errs.accountNumber = 'Account number is required'
-    if (!form.email.trim()) errs.email = 'Email is required'
-    else if (!/\S+@\S+\.\S+/.test(form.email)) errs.email = 'Invalid email'
-    if (!form.password) errs.password = 'Password is required'
-    else if (form.password.length < 8) errs.password = 'Minimum 8 characters'
-    if (form.password !== form.confirmPassword) errs.confirmPassword = 'Passwords do not match'
+
+    // Full Name: letters, spaces, hyphens, apostrophes only; 2–60 chars
+    if (!form.fullName.trim()) {
+      errs.fullName = 'Full name is required'
+    } else if (!/^[A-Za-z\s'\-]{2,60}$/.test(form.fullName.trim())) {
+      errs.fullName = 'Name may only contain letters, spaces, hyphens or apostrophes (2–60 chars)'
+    }
+
+    // SA ID Number: exactly 13 digits
+    if (!form.idNumber.trim()) {
+      errs.idNumber = 'ID number is required'
+    } else if (!/^\d{13}$/.test(form.idNumber)) {
+      errs.idNumber = 'SA ID must be exactly 13 digits'
+    }
+
+    // Account Number: 9–12 digits (South African bank accounts are typically 9–11 digits)
+    const rawAccount = form.accountNumber.replace(/[-\s]/g, '')
+    if (!form.accountNumber.trim()) {
+      errs.accountNumber = 'Account number is required'
+    } else if (!/^\d{9,12}$/.test(rawAccount)) {
+      errs.accountNumber = 'Account number must be 9–12 digits'
+    }
+
+    // Email
+    if (!form.email.trim()) {
+      errs.email = 'Email is required'
+    } else if (!/\S+@\S+\.\S+/.test(form.email)) {
+      errs.email = 'Invalid email address'
+    }
+
+    // Password
+    if (!form.password) {
+      errs.password = 'Password is required'
+    } else if (form.password.length < 8) {
+      errs.password = 'Minimum 8 characters'
+    }
+
+    // Confirm Password
+    if (form.password !== form.confirmPassword) {
+      errs.confirmPassword = 'Passwords do not match'
+    }
+
+    // Terms
     if (!agreed) errs.terms = 'You must accept the terms'
+
     return errs
   }
 
@@ -106,36 +148,89 @@ export default function RegisterForm({ onSwitchToLogin }) {
       </div>
 
       <h2 className={styles.heading}>Open Account</h2>
-     
 
       {apiError && <div className={styles.alertDanger}>{apiError}</div>}
 
       <form onSubmit={handleSubmit} noValidate>
         <div className={styles.twoCol}>
-          <InputField label="Full Name" icon={<UserIcon />} name="fullName" placeholder="Jane Doe"
-            value={form.fullName} onChange={handleChange} error={errors.fullName} />
-          <InputField label="SA ID Number" icon={<IdIcon />} name="idNumber" placeholder="13 digits"
-            value={form.idNumber} onChange={handleChange} error={errors.idNumber} />
+          <InputField
+            label="Full Name"
+            icon={<UserIcon />}
+            name="fullName"
+            placeholder="Jane Doe"
+            value={form.fullName}
+            onChange={handleChange}
+            error={errors.fullName}
+          />
+          <InputField
+            label="SA ID Number"
+            icon={<IdIcon />}
+            name="idNumber"
+            placeholder="13 digits"
+            value={form.idNumber}
+            onChange={handleChange}
+            error={errors.idNumber}
+            maxLength={13}
+          />
         </div>
 
-        <InputField label="Account Number" icon={<CardIcon />} name="accountNumber"
-          placeholder="e.g. 4001-00123456" value={form.accountNumber} onChange={handleChange} error={errors.accountNumber} />
-        <InputField label="Email Address" icon={<MailIcon />} name="email" type="email"
-          placeholder="you@example.com" value={form.email} onChange={handleChange} error={errors.email} />
-        <InputField label="Password" icon={<KeyIcon />} name="password" type="password"
-          placeholder="Min 8 characters" value={form.password} onChange={handleChange} error={errors.password} />
+        <InputField
+          label="Account Number"
+          icon={<CardIcon />}
+          name="accountNumber"
+          placeholder="9–12 digits"
+          value={form.accountNumber}
+          onChange={handleChange}
+          error={errors.accountNumber}
+          maxLength={12}
+        />
+
+        <InputField
+          label="Email Address"
+          icon={<MailIcon />}
+          name="email"
+          type="email"
+          placeholder="you@example.com"
+          value={form.email}
+          onChange={handleChange}
+          error={errors.email}
+        />
+
+        <InputField
+          label="Password"
+          icon={<KeyIcon />}
+          name="password"
+          type="password"
+          placeholder="Min 8 characters"
+          value={form.password}
+          onChange={handleChange}
+          error={errors.password}
+        />
 
         <PasswordStrength password={form.password} />
 
-        <InputField label="Confirm Password" icon={<KeyIcon />} name="confirmPassword" type="password"
-          placeholder="Repeat password" value={form.confirmPassword} onChange={handleChange} error={errors.confirmPassword} />
+        <InputField
+          label="Confirm Password"
+          icon={<KeyIcon />}
+          name="confirmPassword"
+          type="password"
+          placeholder="Repeat password"
+          value={form.confirmPassword}
+          onChange={handleChange}
+          error={errors.confirmPassword}
+        />
 
         <div className={styles.termsRow}>
-          <input type="checkbox" id="terms" checked={agreed}
-            onChange={e => { setAgreed(e.target.checked); setErrors(p => ({...p, terms: ''})) }}
-            className={styles.checkbox} />
+          <input
+            type="checkbox"
+            id="terms"
+            checked={agreed}
+            onChange={e => { setAgreed(e.target.checked); setErrors(p => ({ ...p, terms: '' })) }}
+            className={styles.checkbox}
+          />
           <label htmlFor="terms" className={styles.termsLabel}>
-            I agree to the <a href="#" className={styles.termsLink}>Terms</a> &amp; <a href="#" className={styles.termsLink}>Privacy Policy</a>
+            I agree to the <a href="#" className={styles.termsLink}>Terms</a> &amp;{' '}
+            <a href="#" className={styles.termsLink}>Privacy Policy</a>
           </label>
         </div>
         {errors.terms && <p className={styles.termsError}>{errors.terms}</p>}
