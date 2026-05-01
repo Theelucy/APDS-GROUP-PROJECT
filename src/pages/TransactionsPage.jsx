@@ -37,7 +37,7 @@ export default function TransactionsPage() {
       <Sidebar />
       <main className={styles.main}>
         <h1 className={styles.pageTitle}>Transactions</h1>
-        <p className={styles.pageSub}>Your SWIFT payment history — retrieved via Firestore parameterised queries</p>
+        <p className={styles.pageSub}>Your SWIFT payment history</p>
 
         <div className={styles.formCard}>
           {loading ? (
