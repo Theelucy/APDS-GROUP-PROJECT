@@ -124,10 +124,6 @@ export default function PaymentPage() {
               </div>
             </div>
 
-            <div className={styles.securityNote}>
-              Protected by CSP headers, XSS filters and anti-clickjack policies. All transactions are AES-256 encrypted.
-            </div>
-
             <button type="submit" className={styles.btnPrimary} disabled={loading}>
               {loading ? 'Processing...' : 'Submit Payment'}
             </button>
