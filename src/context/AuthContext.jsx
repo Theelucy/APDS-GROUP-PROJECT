@@ -1,66 +1,42 @@
 import React, { createContext, useContext, useState } from 'react'
+import axios from 'axios'
 
 const AuthContext = createContext(null)
 
-// Dummy test accounts — backend team will replace with real API calls
-const DUMMY_USERS = [
-  {
-    uid: '1',
-    email: 'customer@test.com',
-    password: 'password123',
-    fullName: 'Jane Doe',
-    accountNumber: '4001-00123456',
-    idNumber: '0001010000000',
-    role: 'customer'
-  },
-  {
-    uid: '2',
-    email: 'employee@test.com',
-    password: 'password123',
-    fullName: 'John Smith',
-    accountNumber: '4001-00654321',
-    idNumber: '0001010000001',
-    role: 'employee'
-  }
-]
+const api = axios.create({
+  baseURL: 'http://localhost:5000',
+  withCredentials: true // sends the httpOnly cookie with every request
+})
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
-  const [userData, setUserData] = useState(null)
 
   async function register({ fullName, idNumber, accountNumber, email, password }) {
-    // Simulate registration — backend team will replace with real API
-    const newUser = {
-      uid: Date.now().toString(),
-      email,
-      fullName,
-      idNumber,
-      accountNumber,
-      role: 'customer'
-    }
-    setUser(newUser)
-    setUserData(newUser)
-    return newUser
+    const { data } = await api.post('/api/auth/register', {
+      fullName, idNumber, accountNumber, email, password
+    })
+    return data
   }
 
   async function login({ email, password }) {
-    // Check against dummy users
-    const found = DUMMY_USERS.find(
-      u => u.email === email && u.password === password
-    )
-    if (!found) throw new Error('Invalid email or password')
-    setUser(found)
-    setUserData(found)
-    return found
+    const { data } = await api.post('/api/auth/login', { email, password })
+    setUser(data.user)
+    return data.user
   }
 
   async function logout() {
+    await api.post('/api/auth/logout')
     setUser(null)
-    setUserData(null)
+  }
+
+  async function getMe() {
+    const { data } = await api.get('/api/auth/me')
+    setUser(data)
+    return data
   }
 
   return (
-    <AuthContext.Provider value={{ user, userData, loading: false, register, login, logout }}>
+    <AuthContext.Provider value={{ user, register, login, logout, getMe }}>
       {children}
     </AuthContext.Provider>
   )

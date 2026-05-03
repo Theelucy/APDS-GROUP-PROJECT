@@ -11,6 +11,7 @@ db.exec(`
     fullName TEXT NOT NULL,
     idNumber TEXT NOT NULL UNIQUE,
     accountNumber TEXT NOT NULL UNIQUE,
+    username TEXT UNIQUE,
     email TEXT NOT NULL UNIQUE,
     passwordHash TEXT NOT NULL,
     role TEXT NOT NULL DEFAULT 'customer',

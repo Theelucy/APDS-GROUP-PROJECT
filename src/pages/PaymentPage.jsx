@@ -159,8 +159,6 @@ export default function PaymentPage() {
               </div>
             </div>
 
-            
-
             <button type="submit" className={styles.btnPrimary} disabled={loading}>
               {loading ? 'Processing...' : 'Submit Payment'}
             </button>
