@@ -5,8 +5,11 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 
-const authRoutes = require('./routes/auth');
-const paymentRoutes = require('./routes/payments');
+//const authRoutes = require('./routes/auth');
+//const paymentRoutes = require('./routes/payments');
+
+const authRoutes = require('./src/routes/auth');
+const paymentRoutes = require('./src/routes/payments');
 
 const app = express();
 
