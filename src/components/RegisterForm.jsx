@@ -49,6 +49,20 @@ const IdIcon = () => (
   </svg>
 )
 
+const EyeIcon = () => (
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+    <circle cx="12" cy="12" r="3"></circle>
+  </svg>
+)
+
+const EyeOffIcon = () => (
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+    <line x1="1" y1="1" x2="23" y2="23"></line>
+  </svg>
+)
+
 export default function RegisterForm({ onSwitchToLogin }) {
   const navigate = useNavigate()
   const { register } = useAuth()
@@ -65,6 +79,9 @@ export default function RegisterForm({ onSwitchToLogin }) {
   const [loading, setLoading] = useState(false)
   const [agreed, setAgreed] = useState(false)
 
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
   function handleChange(e) {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
     setErrors(prev => ({ ...prev, [e.target.name]: '' }))
@@ -74,21 +91,18 @@ export default function RegisterForm({ onSwitchToLogin }) {
   function validate() {
     const errs = {}
 
-    // Full Name: letters, spaces, hyphens, apostrophes only; 2–60 chars
     if (!form.fullName.trim()) {
       errs.fullName = 'Full name is required'
     } else if (!/^[A-Za-z\s'\-]{2,60}$/.test(form.fullName.trim())) {
       errs.fullName = 'Name may only contain letters, spaces, hyphens or apostrophes (2–60 chars)'
     }
 
-    // SA ID Number: exactly 13 digits
     if (!form.idNumber.trim()) {
       errs.idNumber = 'ID number is required'
     } else if (!/^\d{13}$/.test(form.idNumber)) {
       errs.idNumber = 'SA ID must be exactly 13 digits'
     }
 
-    // Account Number: 9–12 digits (South African bank accounts are typically 9–11 digits)
     const rawAccount = form.accountNumber.replace(/[-\s]/g, '')
     if (!form.accountNumber.trim()) {
       errs.accountNumber = 'Account number is required'
@@ -96,26 +110,22 @@ export default function RegisterForm({ onSwitchToLogin }) {
       errs.accountNumber = 'Account number must be 9–12 digits'
     }
 
-    // Email
     if (!form.email.trim()) {
       errs.email = 'Email is required'
     } else if (!/\S+@\S+\.\S+/.test(form.email)) {
       errs.email = 'Invalid email address'
     }
 
-    // Password
     if (!form.password) {
       errs.password = 'Password is required'
     } else if (form.password.length < 8) {
       errs.password = 'Minimum 8 characters'
     }
 
-    // Confirm Password
     if (form.password !== form.confirmPassword) {
       errs.confirmPassword = 'Passwords do not match'
     }
 
-    // Terms
     if (!agreed) errs.terms = 'You must accept the terms'
 
     return errs
@@ -142,11 +152,29 @@ export default function RegisterForm({ onSwitchToLogin }) {
 
   return (
     <div className={styles.formWrap}>
-      <div className={styles.logoRow}>
-        <div className={styles.logoMark}><LockIcon /></div>
-        <span className={styles.logoText}>Secure<span className={styles.logoAccent}>Swift</span></span>
-      </div>
-
+       <div className={styles.logoRow} style={{ 
+           display: 'flex', 
+           alignItems: 'center', // This keeps text and logo perfectly leveled
+           justifyContent: 'center', 
+           gap: '12px', // Adds a nice space between the words and the logo
+           marginBottom: '25px',
+           fontFamily: 'inherit',
+           fontSize: '1.8rem', // Adjust size to your liking
+           fontWeight: 'bold'
+       }}>
+         {/* Left side text */}
+         <span style={{ color: '#ffffff' }}>Secure</span>
+         
+         {/* Centered Logo */}
+         <img 
+           src="/SecureSwiftlogo.jpeg" 
+           alt="SecureSwift Logo" 
+           style={{ height: '50px', width: 'auto', borderRadius: '6px' }} 
+         />
+         
+         {/* Right side text */}
+         <span style={{ color: '#007bff' }}>Swift</span>
+       </div>
       <h2 className={styles.heading}>Open Account</h2>
 
       {apiError && <div className={styles.alertDanger}>{apiError}</div>}
@@ -196,29 +224,71 @@ export default function RegisterForm({ onSwitchToLogin }) {
           error={errors.email}
         />
 
-        <InputField
-          label="Password"
-          icon={<KeyIcon />}
-          name="password"
-          type="password"
-          placeholder="Min 8 characters"
-          value={form.password}
-          onChange={handleChange}
-          error={errors.password}
-        />
+        <div style={{ position: 'relative' }}>
+          <InputField
+            label="Password"
+            icon={<KeyIcon />}
+            name="password"
+            type={showPassword ? "text" : "password"} 
+            placeholder="Min 8 characters"
+            value={form.password}
+            onChange={handleChange}
+            error={errors.password}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            style={{
+              position: 'absolute',
+              right: '15px',
+              top: '30px',
+              background: 'transparent',
+              border: 'none',
+              color: '#888',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '5px'
+            }}
+          >
+            {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+          </button>
+        </div>
 
         <PasswordStrength password={form.password} />
 
-        <InputField
-          label="Confirm Password"
-          icon={<KeyIcon />}
-          name="confirmPassword"
-          type="password"
-          placeholder="Repeat password"
-          value={form.confirmPassword}
-          onChange={handleChange}
-          error={errors.confirmPassword}
-        />
+        <div style={{ position: 'relative' }}>
+          <InputField
+            label="Confirm Password"
+            icon={<KeyIcon />}
+            name="confirmPassword"
+            type={showConfirmPassword ? "text" : "password"}
+            placeholder="Repeat password"
+            value={form.confirmPassword}
+            onChange={handleChange}
+            error={errors.confirmPassword}
+          />
+          <button
+            type="button"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            style={{
+              position: 'absolute',
+              right: '15px',
+              top: '30px', 
+              background: 'transparent',
+              border: 'none',
+              color: '#888',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '5px'
+            }}
+          >
+            {showConfirmPassword ? <EyeOffIcon /> : <EyeIcon />}
+          </button>
+        </div>
 
         <div className={styles.termsRow}>
           <input

@@ -23,18 +23,14 @@ export default function AuthPage() {
           {/* ── Login face ── */}
           <div className={`${styles.face} ${styles.front}`}>
             <div className={styles.shine} />
-            <div className={styles.logoWrap}>
-              <img src="/project_logo.jpeg" alt="SecurSwift" className={styles.logo} />
-            </div>
+           
             <LoginForm onSwitchToRegister={() => setShowRegister(true)} />
           </div>
 
           {/* ── Register face ── */}
           <div className={`${styles.face} ${styles.back}`}>
             <div className={styles.shine} />
-            <div className={styles.logoWrap}>
-              <img src="/project_logo.jpeg" alt="SecurSwift" className={styles.logo} />
-            </div>
+           
             <RegisterForm onSwitchToLogin={() => setShowRegister(false)} />
           </div>
         </div>

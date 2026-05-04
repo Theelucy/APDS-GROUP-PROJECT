@@ -24,11 +24,7 @@ export default function Sidebar() {
     <aside className={styles.sidebar}>
       <div className={styles.top}>
 
-        {/* ── Logo ── */}
-        <div className={styles.brand}>
-          <img src="/project_logo.jpeg" alt="SecurSwift" className={styles.brandLogo} />
-        </div>
-
+      
         <nav className={styles.nav}>
           {navItems.map(item => (
             <button
