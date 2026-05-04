@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext.jsx'
 import Sidebar from '../components/Sidebar.jsx'
 import styles from './Dashboard.module.css'
 
+
 function useCountUp(target, duration = 1400) {
   const [value, setValue] = useState(0)
   useEffect(() => {
@@ -30,7 +31,7 @@ const TICKER_ITEMS = [
 ]
 
 export default function Dashboard() {
-  const { userData } = useAuth()
+  const { userData, measureLatency } = useAuth()
   const navigate = useNavigate()
   const [time, setTime] = useState(new Date())
   const [mounted, setMounted] = useState(false)
@@ -42,8 +43,15 @@ export default function Dashboard() {
   }, [])
 
   const uptimeVal = useCountUp(99, 1800)
-  const txVal     = useCountUp(256, 1600)
-  const latencyVal= useCountUp(18, 1200)
+const txVal     = useCountUp(userData?.transactionCount ?? 0, 1600)
+const [realLatency, setRealLatency] = useState(18)
+const latencyVal = useCountUp(realLatency, 1200)
+
+useEffect(() => {
+  if (measureLatency) {
+    measureLatency().then(ms => setRealLatency(ms))
+  }
+}, [])
 
   const pad = n => String(n).padStart(2, '0')
   const clockStr = `${pad(time.getHours())}:${pad(time.getMinutes())}:${pad(time.getSeconds())}`

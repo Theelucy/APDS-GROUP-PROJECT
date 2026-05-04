@@ -86,15 +86,15 @@ const login = async (req, res) => {
     );
 
     res.cookie('token', token, {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'strict',
-      maxAge: 3600000
-    });
+  httpOnly: true,
+  secure: true,
+  sameSite: 'none',
+  maxAge: 3600000
+});
 
     res.status(200).json({
       message: 'Login successful',
-      user: { id: user.id, username: user.username, fullName: user.fullName, role: user.role }
+      user: { id: user.id, username: user.username, fullName: user.fullName, accountNumber: user.accountNumber, role: user.role }
     });
 
   } catch (error) {
@@ -113,7 +113,16 @@ const logout = (req, res) => {
 const getMe = (req, res) => {
   const user = db.prepare('SELECT id, username, fullName, email, accountNumber, role FROM users WHERE id = ?')
     .get(req.user.id);
-  res.status(200).json(user);
+
+  // Count real transactions for this user
+  const transactionCount = db.prepare('SELECT COUNT(*) as total FROM transactions WHERE userId = ?')
+    .get(req.user.id);
+
+  res.status(200).json({
+    ...user,
+    transactionCount: transactionCount.total
+  });
 };
+
 
 module.exports = { register, login, logout, getMe };

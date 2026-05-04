@@ -4,7 +4,7 @@ import axios from 'axios'
 const AuthContext = createContext(null)
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000',
+  baseURL: 'https://localhost:5000',
   withCredentials: true
 })
 
@@ -20,24 +20,33 @@ export function AuthProvider({ children }) {
 
   async function login({ email, password }) {
     const { data } = await api.post('/api/auth/login', { email, password })
-    setUser(data.user)
-    return data.user
+    // Fetch full user data including transaction count
+    const { data: fullUser } = await api.get('/api/auth/me')
+    setUser(fullUser)
+    return fullUser
   }
+
 
   async function logout() {
     await api.post('/api/auth/logout')
     setUser(null)
   }
 
-  async function getMe() {
+ async function getMe() {
     const { data } = await api.get('/api/auth/me')
     setUser(data)
     return data
   }
 
+  // Measure real latency
+  async function measureLatency() {
+    const start = Date.now()
+    await api.get('/api/auth/me')
+    return Date.now() - start
+  }
+
   return (
-    // user and userData both point to same object so Dashboard works
-    <AuthContext.Provider value={{ user, userData: user, register, login, logout, getMe }}>
+    <AuthContext.Provider value={{ user, userData: user, register, login, logout, getMe, measureLatency }}>
       {children}
     </AuthContext.Provider>
   )
