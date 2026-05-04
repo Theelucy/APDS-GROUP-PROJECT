@@ -1,0 +1,30 @@
+name: SecureSwift DevSecOps Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  security-scan:
+    name: Automated Vulnerability Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Backend Security Audit
+        working-directory: ./backend
+        run: |
+          npm install --package-lock-only
+          npm audit --audit-level=moderate || true
+
+      - name: Frontend Security Audit
+        run: |
+          npm install --package-lock-only
+          npm audit --audit-level=moderate || true
