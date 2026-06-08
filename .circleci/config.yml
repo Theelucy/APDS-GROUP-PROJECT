@@ -1,5 +1,5 @@
 version: 2.1
-
+# Updated sonar scanner install
 jobs:
   build-frontend:
     docker:
@@ -12,7 +12,6 @@ jobs:
       - run:
           name: Build frontend
           command: npm run build
-
   build-backend:
     docker:
       - image: cimg/node:22.12
@@ -24,7 +23,6 @@ jobs:
       - run:
           name: Install backend dependencies
           command: cd backend && npm install
-
   sonarcloud-scan:
     docker:
       - image: cimg/node:22.12
@@ -41,7 +39,6 @@ jobs:
               -Dsonar.organization=theelucy \
               -Dsonar.host.url=https://sonarcloud.io \
               -Dsonar.login=$SONAR_TOKEN
-
 workflows:
   build-and-test:
     jobs:
