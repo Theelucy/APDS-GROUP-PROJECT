@@ -167,6 +167,7 @@ useEffect(() => {
           <h3 className={styles.sectionTitle}>Quick Actions</h3>
           <div className={styles.actionGrid}>
 
+                     {userData?.role !== 'employee' && (
             <button className={`${styles.actionCard} ${styles.actionSend}`} onClick={() => navigate('/payment')}>
               <div className={styles.actionBg} />
               <div className={styles.actionIconWrap} style={{ background: 'rgba(56,189,248,0.1)', border: '1px solid rgba(56,189,248,0.2)' }}>
@@ -175,7 +176,7 @@ useEffect(() => {
               <span className={styles.actionLabel}>Send Payment</span>
               <span className={styles.actionSub}>SWIFT MT103 Transfer</span>
               <span className={styles.actionArrow}></span>
-            </button>
+            </button>)}
 
             <button className={`${styles.actionCard} ${styles.actionTx}`} onClick={() => navigate('/transactions')}>
               <div className={styles.actionBg} />

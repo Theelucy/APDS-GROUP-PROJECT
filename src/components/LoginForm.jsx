@@ -63,6 +63,28 @@ export default function LoginForm({ onSwitchToRegister }) {
   return (
     <div className={styles.formWrap}>
       {/* This is now centered and the extra text is gone */}
+      <button 
+  onClick={() => navigate('/')}
+  style={{ 
+    background: 'rgba(255,255,255,0.05)', 
+    border: '1px solid rgba(255,255,255,0.08)',
+    borderRadius: '20px',
+    color: '#aaa', 
+    cursor: 'pointer', 
+    fontSize: '0.78rem', 
+    display: 'flex', 
+    alignItems: 'center', 
+    gap: '6px', 
+    marginBottom: '20px',
+    padding: '6px 14px',
+    width: 'fit-content'
+  }}
+>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="12" height="12">
+    <path d="M19 12H5M12 5l-7 7 7 7" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+  Back to home
+</button>
       <div className={styles.logoRow} style={{ 
     display: 'flex', 
     alignItems: 'center', // This keeps text and logo perfectly leveled
@@ -82,6 +104,8 @@ export default function LoginForm({ onSwitchToRegister }) {
     alt="SecureSwift Logo" 
     style={{ height: '50px', width: 'auto', borderRadius: '6px' }} 
   />
+
+  
   
   {/* Right side text */}
   <span style={{ color: '#007bff' }}>Swift</span>

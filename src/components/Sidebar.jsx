@@ -26,7 +26,9 @@ export default function Sidebar() {
 
       
         <nav className={styles.nav}>
-          {navItems.map(item => (
+         {navItems
+         .filter(item => !(userData?.role === 'employee' && item.path === '/payment'))
+         .map(item => (
             <button
               key={item.path}
               className={`${styles.navItem} ${location.pathname === item.path ? styles.active : ''}`}

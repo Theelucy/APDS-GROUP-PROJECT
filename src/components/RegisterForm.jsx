@@ -78,7 +78,6 @@ export default function RegisterForm({ onSwitchToLogin }) {
   const [apiError, setApiError] = useState('')
   const [loading, setLoading] = useState(false)
   const [agreed, setAgreed] = useState(false)
-
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
@@ -120,6 +119,8 @@ export default function RegisterForm({ onSwitchToLogin }) {
       errs.password = 'Password is required'
     } else if (form.password.length < 8) {
       errs.password = 'Minimum 8 characters'
+    } else if (/\s/.test(form.password)) {
+      errs.password = 'Password cannot contain spaces'
     }
 
     if (form.password !== form.confirmPassword) {
@@ -140,7 +141,10 @@ export default function RegisterForm({ onSwitchToLogin }) {
       await register(form)
       navigate('/dashboard')
     } catch (err) {
-      if (err.code === 'auth/email-already-in-use') {
+      const msg = err.response?.data?.message
+      if (msg) {
+        setApiError(msg)
+      } else if (err.code === 'auth/email-already-in-use') {
         setApiError('This email is already registered. Please sign in.')
       } else {
         setApiError('Registration failed. Please try again.')
@@ -152,29 +156,48 @@ export default function RegisterForm({ onSwitchToLogin }) {
 
   return (
     <div className={styles.formWrap}>
-       <div className={styles.logoRow} style={{ 
-           display: 'flex', 
-           alignItems: 'center', // This keeps text and logo perfectly leveled
-           justifyContent: 'center', 
-           gap: '12px', // Adds a nice space between the words and the logo
-           marginBottom: '25px',
-           fontFamily: 'inherit',
-           fontSize: '1.8rem', // Adjust size to your liking
-           fontWeight: 'bold'
-       }}>
-         {/* Left side text */}
-         <span style={{ color: '#ffffff' }}>Secure</span>
-         
-         {/* Centered Logo */}
-         <img 
-           src="/SecureSwiftlogo.jpeg" 
-           alt="SecureSwift Logo" 
-           style={{ height: '50px', width: 'auto', borderRadius: '6px' }} 
-         />
-         
-         {/* Right side text */}
-         <span style={{ color: '#007bff' }}>Swift</span>
-       </div>
+      <button
+        onClick={() => navigate('/')}
+        style={{
+          background: 'rgba(255,255,255,0.05)',
+          border: '1px solid rgba(255,255,255,0.08)',
+          borderRadius: '20px',
+          color: '#aaa',
+          cursor: 'pointer',
+          fontSize: '0.78rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          marginBottom: '20px',
+          padding: '6px 14px',
+          width: 'fit-content'
+        }}
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="12" height="12">
+          <path d="M19 12H5M12 5l-7 7 7 7" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+        Back to home
+      </button>
+
+      <div className={styles.logoRow} style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '12px',
+        marginBottom: '25px',
+        fontFamily: 'inherit',
+        fontSize: '1.8rem',
+        fontWeight: 'bold'
+      }}>
+        <span style={{ color: '#ffffff' }}>Secure</span>
+        <img
+          src="/SecureSwiftlogo.jpeg"
+          alt="SecureSwift Logo"
+          style={{ height: '50px', width: 'auto', borderRadius: '6px' }}
+        />
+        <span style={{ color: '#007bff' }}>Swift</span>
+      </div>
+
       <h2 className={styles.heading}>Open Account</h2>
 
       {apiError && <div className={styles.alertDanger}>{apiError}</div>}
@@ -229,7 +252,7 @@ export default function RegisterForm({ onSwitchToLogin }) {
             label="Password"
             icon={<KeyIcon />}
             name="password"
-            type={showPassword ? "text" : "password"} 
+            type={showPassword ? 'text' : 'password'}
             placeholder="Min 8 characters"
             value={form.password}
             onChange={handleChange}
@@ -239,17 +262,10 @@ export default function RegisterForm({ onSwitchToLogin }) {
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             style={{
-              position: 'absolute',
-              right: '15px',
-              top: '30px',
-              background: 'transparent',
-              border: 'none',
-              color: '#888',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '5px'
+              position: 'absolute', right: '15px', top: '30px',
+              background: 'transparent', border: 'none', color: '#888',
+              cursor: 'pointer', display: 'flex', alignItems: 'center',
+              justifyContent: 'center', padding: '5px'
             }}
           >
             {showPassword ? <EyeOffIcon /> : <EyeIcon />}
@@ -258,12 +274,37 @@ export default function RegisterForm({ onSwitchToLogin }) {
 
         <PasswordStrength password={form.password} />
 
+        {form.password && (
+          <div style={{ marginTop: '8px', marginBottom: '12px' }}>
+            {[
+              { label: 'At least 8 characters', test: form.password.length >= 8 },
+              { label: 'One uppercase letter (A-Z)', test: /[A-Z]/.test(form.password) },
+              { label: 'One lowercase letter (a-z)', test: /[a-z]/.test(form.password) },
+              { label: 'One number (0-9)', test: /\d/.test(form.password) },
+              { label: 'One special character (@$!%*?&)', test: /[@$!%*?&]/.test(form.password) },
+              { label: 'No spaces allowed', test: !/\s/.test(form.password) },
+            ].map(({ label, test }) => (
+              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <svg viewBox="0 0 24 24" fill="none" stroke={test ? '#22c55e' : '#475569'} strokeWidth="2.5" width="13" height="13">
+                  {test
+                    ? <polyline points="20 6 9 17 4 12"/>
+                    : <circle cx="12" cy="12" r="10"/>
+                  }
+                </svg>
+                <span style={{ fontSize: '0.75rem', color: test ? '#22c55e' : '#475569' }}>
+                  {label}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+
         <div style={{ position: 'relative' }}>
           <InputField
             label="Confirm Password"
             icon={<KeyIcon />}
             name="confirmPassword"
-            type={showConfirmPassword ? "text" : "password"}
+            type={showConfirmPassword ? 'text' : 'password'}
             placeholder="Repeat password"
             value={form.confirmPassword}
             onChange={handleChange}
@@ -273,17 +314,10 @@ export default function RegisterForm({ onSwitchToLogin }) {
             type="button"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
             style={{
-              position: 'absolute',
-              right: '15px',
-              top: '30px', 
-              background: 'transparent',
-              border: 'none',
-              color: '#888',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '5px'
+              position: 'absolute', right: '15px', top: '30px',
+              background: 'transparent', border: 'none', color: '#888',
+              cursor: 'pointer', display: 'flex', alignItems: 'center',
+              justifyContent: 'center', padding: '5px'
             }}
           >
             {showConfirmPassword ? <EyeOffIcon /> : <EyeIcon />}

@@ -7,7 +7,7 @@ import styles from './InnerPage.module.css'
 const STATUS_COLORS = { pending: '#f97316', verified: '#22c55e', rejected: '#ef4444' }
 
 export default function TransactionsPage() {
-  const { user } = useAuth()
+  const { user, userData } = useAuth()
   const [transactions, setTransactions] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -37,7 +37,11 @@ export default function TransactionsPage() {
           {loading ? (
             <p className={styles.emptyMsg}>Loading transactions...</p>
           ) : transactions.length === 0 ? (
-            <p className={styles.emptyMsg}>No transactions yet. Send your first payment from the Send Payment page.</p>
+            <p className={styles.emptyMsg}>
+          {userData?.role === 'employee' 
+            ? 'No pending transactions to display.' 
+            : 'No transactions yet. Send your first payment from the Send Payment page.'}
+             </p>
           ) : (
             <div className={styles.txList}>
               <div className={styles.txHeader}>

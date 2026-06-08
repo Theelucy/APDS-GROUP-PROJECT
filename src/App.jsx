@@ -9,6 +9,7 @@ import PaymentPage from './pages/PaymentPage.jsx'
 import TransactionsPage from './pages/TransactionsPage.jsx'
 import SecurityPage from './pages/SecurityPage.jsx'
 import EmployeePage from './pages/EmployeePage.jsx'
+import EmployeeLoginPage from './pages/EmployeeLoginPage.jsx'
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
 
           {/* Employee-only protected route */}
           <Route path="/employee"      element={<ProtectedRoute employeeOnly><EmployeePage /></ProtectedRoute>} />
+          <Route path="/employee-login" element={<EmployeeLoginPage />} /> 
 
           {/* Default */}
           <Route path="*" element={<Navigate to="/auth" replace />} />

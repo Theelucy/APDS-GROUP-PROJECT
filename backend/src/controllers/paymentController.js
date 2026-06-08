@@ -44,4 +44,13 @@ const verifyPayment = (req, res) => {
   res.status(200).json({ message: 'Payment verified' });
 };
 
-module.exports = { createPayment, getMyPayments, getAllPayments, verifyPayment };
+// REJECT PAYMENT - employee only
+const rejectPayment = (req, res) => {
+  const payment = db.prepare('SELECT * FROM transactions WHERE id = ?').get(req.params.id);
+  if (!payment) return res.status(404).json({ message: 'Transaction not found' });
+
+  db.prepare('UPDATE transactions SET status = ? WHERE id = ?').run('rejected', req.params.id);
+  res.status(200).json({ message: 'Payment rejected' });
+};
+
+module.exports = { createPayment, getMyPayments, getAllPayments, verifyPayment, rejectPayment };

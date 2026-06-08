@@ -19,7 +19,6 @@ export default function EmployeePage() {
     setLoading(true)
     try {
       const { data } = await api.get('/api/payments/all')
-      // Only show pending transactions
       setTransactions(data.filter(tx => tx.status === 'pending'))
     } catch {
       setTransactions([])
@@ -32,12 +31,16 @@ export default function EmployeePage() {
 
   async function handleAction(txId, action) {
     try {
+      console.log('Attempting action:', action, 'for tx:', txId)
       if (action === 'approved') {
         await api.patch(`/api/payments/${txId}/verify`)
+      } else if (action === 'rejected') {
+        await api.patch(`/api/payments/${txId}/reject`)
       }
       setActionMsg(`Transaction ${action} successfully.`)
-      fetchTransactions()
-    } catch {
+      setTimeout(() => fetchTransactions(), 300)
+    } catch (err) {
+      console.error('Action error:', err.response?.data || err.message)
       setActionMsg('Action failed. Please try again.')
     }
   }
@@ -70,6 +73,7 @@ export default function EmployeePage() {
                 <span>Recipient</span>
                 <span>Amount</span>
                 <span>SWIFT</span>
+                <span>Status</span>
                 <span>Actions</span>
               </div>
               {transactions.map(tx => (
@@ -84,6 +88,18 @@ export default function EmployeePage() {
                   </div>
                   <p className={styles.txAmount}>{tx.currency} {Number(tx.amount).toFixed(2)}</p>
                   <p className={styles.txSwift}>{tx.swiftCode}</p>
+                  <span style={{
+                    background: 'rgba(246,173,85,0.12)',
+                    border: '1px solid rgba(246,173,85,0.3)',
+                    color: '#f6ad55',
+                    fontSize: '0.72rem',
+                    fontWeight: 600,
+                    padding: '3px 10px',
+                    borderRadius: '20px',
+                    textTransform: 'uppercase'
+                  }}>
+                    {tx.status}
+                  </span>
                   <div className={styles.actionBtns}>
                     <button 
                       className={styles.btnApprove} 

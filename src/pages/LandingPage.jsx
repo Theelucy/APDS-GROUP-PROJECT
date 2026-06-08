@@ -207,6 +207,7 @@ export default function LandingPage() {
         <div className={styles.navActions}>
           <button className={styles.navBtnGhost} onClick={() => navigate('/auth')}>Sign in</button>
           <button className={styles.navBtnSolid} onClick={() => navigate('/auth')}>Open account</button>
+           <button className={styles.navBtnGhost} style={{ fontSize: '0.78rem', opacity: 0.6 }} onClick={() => navigate('/employee-login')}>Staff portal</button>
         </div>
       </nav>
 
@@ -444,6 +445,9 @@ export default function LandingPage() {
           <Logo height={28} />
         </div>
         <p className={styles.footerNote}>SecureSwift &nbsp;|&nbsp; 2026</p>
+         <button onClick={() => navigate('/employee-login')} style={{ background: 'none', border: 'none', color: '#555', fontSize: '0.75rem', cursor: 'pointer', marginTop: '8px' }}>
+    Employee access
+    </button>
       </footer>
 
     </div>
