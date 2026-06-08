@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build-frontend:
     docker:
-      - image: cimg/node:18.0
+      - image: cimg/node:22.12
     steps:
       - checkout
       - run:
@@ -15,7 +15,7 @@ jobs:
 
   build-backend:
     docker:
-      - image: cimg/node:18.0
+      - image: cimg/node:22.12
     steps:
       - checkout
       - run:
