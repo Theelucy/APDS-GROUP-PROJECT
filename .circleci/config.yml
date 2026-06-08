@@ -32,11 +32,11 @@ jobs:
       - checkout
       - run:
           name: Install Sonar Scanner
-          command: npm install -g sonarqube-scanner
+          command: npm install sonarqube-scanner
       - run:
           name: Run SonarCloud Scan
           command: |
-            sonar-scanner \
+            npx sonar-scanner \
               -Dsonar.projectKey=Theelucy_APDS-GROUP-PROJECT \
               -Dsonar.organization=theelucy \
               -Dsonar.host.url=https://sonarcloud.io \
