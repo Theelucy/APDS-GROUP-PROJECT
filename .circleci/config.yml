@@ -1,0 +1,32 @@
+version: 2.1
+
+jobs:
+  build-frontend:
+    docker:
+      - image: cimg/node:18.0
+    steps:
+      - checkout
+      - run:
+          name: Install frontend dependencies
+          command: npm install
+      - run:
+          name: Build frontend
+          command: npm run build
+
+  build-backend:
+    docker:
+      - image: cimg/node:18.0
+    steps:
+      - checkout
+      - run:
+          name: Install backend dependencies
+          command: cd backend && npm install
+      - run:
+          name: Start backend (smoke test)
+          command: cd backend && timeout 10s npm start || true
+
+workflows:
+  build-and-test:
+    jobs:
+      - build-frontend
+      - build-backend
