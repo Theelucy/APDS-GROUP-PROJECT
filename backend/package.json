@@ -1,32 +1,28 @@
-version: 2.1
-
-jobs:
-  build-frontend:
-    docker:
-      - image: cimg/node:18.0
-    steps:
-      - checkout
-      - run:
-          name: Install frontend dependencies
-          command: npm install
-      - run:
-          name: Build frontend
-          command: npm run build
-
-  build-backend:
-    docker:
-      - image: cimg/node:18.0
-    steps:
-      - checkout
-      - run:
-          name: Install backend dependencies
-          command: cd backend && npm install
-      - run:
-          name: Start backend (smoke test)
-          command: cd backend && timeout 10s npm start || true
-
-workflows:
-  build-and-test:
-    jobs:
-      - build-frontend
-      - build-backend
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "argon2": "^0.44.0",
+    "better-sqlite3": "^12.9.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.4.1",
+    "express-validator": "^7.3.2",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
