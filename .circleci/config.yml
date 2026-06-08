@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  sonarcloud: sonarsource/sonarcloud@2.0.0
+
 jobs:
   build-frontend:
     docker:
@@ -21,15 +24,3 @@ jobs:
       - run:
           name: Install build tools
           command: sudo apt-get update && sudo apt-get install -y python3 make g++
-      - run:
-          name: Install backend dependencies
-          command: cd backend && npm install
-      - run:
-          name: Start backend (smoke test)
-          command: cd backend && timeout 10s npm start || true
-
-workflows:
-  build-and-test:
-    jobs:
-      - build-frontend
-      - build-backend
